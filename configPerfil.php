@@ -20,7 +20,7 @@ if ($_POST){
   $fechaDeNac = trim($_POST['fechaNacimiento']);
   $intereses = trim ($_POST['intereses']);
   $errores= Validaciones::validarConfigPerfil($_POST);
-  $dbMYSQL->saveProfile($usuario,  $errores , $_POST);
+  $dbMYSQL->saveProfile($usuario->getId(),  $errores , $_POST);
 }
 ?>
 <!DOCTYPE html>

@@ -94,10 +94,10 @@ class dbMySql extends DB{
             $crear_profile_table = $this->pdo->prepare('CREATE TABLE IF NOT EXISTS profile_user (
               id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
               ciudadDeNacimiento VARCHAR(60) NOT NULL,
-              ocupacion VARCHAR(30) NOT NULL,
+              ocupacion VARCHAR(30),
               idiomas VARCHAR(50),
-              fechaDeNacimiento DATETIME NOT NULL,
-              intereses VARCHAR(60) NOT NULL,
+              fechaDeNacimiento VARCHAR(10),
+              intereses VARCHAR(60),
               usuario_id INT unsigned NOT NULL,
               FOREIGN KEY (usuario_id) REFERENCES users (id) )');
 
@@ -251,7 +251,7 @@ class dbMySql extends DB{
         if (count($resultado)>0) {
           foreach ($resultado as $unUsuario) {
             $usuarioEncontrado = new Usuario($unUsuario['nameComplete'], $unUsuario['email'], $unUsuario['country'], $unUsuario['username'], $unUsuario['password'], $unUsuario['imagen']);
-            //$usuarioEncontrado->setId($unUsuario['id']);
+            $usuarioEncontrado->setId($unUsuario['id']);
             return $usuarioEncontrado;
           }
         }
@@ -286,24 +286,20 @@ class dbMySql extends DB{
       }
 
 
-public function saveProfile(Usuario $usuario, $errores,$data){
+public function saveProfile($id, $errores,$data){
   if(empty($errores)){
 
     $use_db = $this->pdo->prepare('USE baseDePrueba');
     $use_db->execute();
-
-var_dump($data); exit;
-    $consulta= "INSERT INTO profile_user (ciudadDeNacimiento, ocupacion, fechaDeNacimiento, intereses, usuario_id)
+    $consulta = "INSERT INTO profile_user (ciudadDeNacimiento, ocupacion, fechaDeNacimiento, intereses, usuario_id)
     VALUES (:ciudad, :ocupacion, :fechaDeNacimiento, :intereses, :usuario_id)";
     $query = $this->pdo->prepare($consulta);
     $query->bindValue(':ciudad', $data['ciudadNacimiento'], PDO::PARAM_STR);
     $query->bindValue(':ocupacion', $data['ocupacion'], PDO::PARAM_STR);
     $query->bindValue(':fechaDeNacimiento', $data['fechaNacimiento'], PDO::PARAM_STR);
     $query->bindValue(':intereses', $data['intereses'], PDO::PARAM_STR);
-    $query->bindValue(':usuario_id',$usuario->getId(), PDO::PARAM_INT);
-
+    $query->bindValue(':usuario_id', $id, PDO::PARAM_INT);
     $query->execute();
-    var_dump($query); exit;
     $this->message = "Gracias por completar tu perfil";
 
   }
