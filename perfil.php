@@ -1,12 +1,14 @@
 <?php
 require_once('acceso.php');
 
-	if (!$auth->estaLogueado()) {  /*esta logueado devuelve si la session[id] esta seteada o no */
-		header('location: inicio-sesion.php');
-		exit;
-	}
+if ($auth->estaLogueado()) {  /*esta logueado devuelve si la session[id] esta seteada o no */
+$usuario = $dbMYSQL->traerPorId($_SESSION['id']);
+
+}else{
 //  	$usuario = $dbJSON->traerPorId($_SESSION['id']);   							ESTA LINEA VA SI QUIERO GUARDAR EN JSON
-	$usuario = $dbMYSQL->traerPorId($_SESSION['id']);
+header('location: inicio-sesion.php');
+exit;
+}
  ?>
 <!DOCTYPE html>
 <html>
@@ -101,9 +103,7 @@ require_once('acceso.php');
 			<h4><?= $usuario->getPais()?></h4>
 		</div>
 <div class='item3 p-2 bg-white col-12 col-sm-6 col-md-7 col-lg-8'>
-	<?php var_dump ($dbMYSQL->getMessage());
-	?>
-
+ Tu perfil se encuentra vacio, completalo desde el boton de configuracion.
 <br><br><br>
 <em>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</em>
 </div>

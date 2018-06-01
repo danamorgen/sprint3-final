@@ -15,6 +15,9 @@ class dbMySql extends DB{
     $this->archivo = 'usuarios.json';                            // este hay que eliminarlo
   }
 
+  public function setMessage($message){
+    $this->message = $message;
+  }
   public function getMessage(){
     return $this->message;
   }
@@ -102,24 +105,22 @@ class dbMySql extends DB{
               FOREIGN KEY (usuario_id) REFERENCES users (id) )');
 
 
-            $crear_profile_table->execute();
+              $crear_profile_table->execute();
 
-            $this->message = "¡Tablas creadas exitosamente!";
-            $this->pdo->commit();
-          } catch (PDOException $e) {
-            $this->pdo->rollBack();
-            $this->message= 'upsss  error en bd '.$e->getMessage();
+              $this->message = "¡Tablas creadas exitosamente!";
+              $this->pdo->commit();
+            } catch (PDOException $e) {
+              $this->pdo->rollBack();
+              $this->message= 'upsss  error en bd '.$e->getMessage();
+            }
+
+          } else {
+            $this->message = "¡La tabla ya ha sido creada previamente!";
           }
 
-      } else {
-        $this->message = "¡La tabla ya ha sido creada previamente!";
+        }
       }
 
-    }
-
-
-
-      }
 
       public function migrationToMySql(){
         $usuariosJson = file_get_contents($this->archivo);
@@ -286,24 +287,22 @@ class dbMySql extends DB{
       }
 
 
-public function saveProfile($id, $errores,$data){
-  if(empty($errores)){
+      public function saveProfile($id, $errores,$data){
+        if(empty($errores)){
 
-    $use_db = $this->pdo->prepare('USE baseDePrueba');
-    $use_db->execute();
-    $consulta = "INSERT INTO profile_user (ciudadDeNacimiento, ocupacion, fechaDeNacimiento, intereses, usuario_id)
-    VALUES (:ciudad, :ocupacion, :fechaDeNacimiento, :intereses, :usuario_id)";
-    $query = $this->pdo->prepare($consulta);
-    $query->bindValue(':ciudad', $data['ciudadNacimiento'], PDO::PARAM_STR);
-    $query->bindValue(':ocupacion', $data['ocupacion'], PDO::PARAM_STR);
-    $query->bindValue(':fechaDeNacimiento', $data['fechaNacimiento'], PDO::PARAM_STR);
-    $query->bindValue(':intereses', $data['intereses'], PDO::PARAM_STR);
-    $query->bindValue(':usuario_id', $id, PDO::PARAM_INT);
-    $query->execute();
-    $this->message = "Gracias por completar tu perfil";
-
-  }
-}
+          $use_db = $this->pdo->prepare('USE baseDePrueba');
+          $use_db->execute();
+          $consulta = "INSERT INTO profile_user (ciudadDeNacimiento, ocupacion, fechaDeNacimiento, intereses, usuario_id)
+          VALUES (:ciudad, :ocupacion, :fechaDeNacimiento, :intereses, :usuario_id)";
+          $query = $this->pdo->prepare($consulta);
+          $query->bindValue(':ciudad', $data['ciudadNacimiento'], PDO::PARAM_STR);
+          $query->bindValue(':ocupacion', $data['ocupacion'], PDO::PARAM_STR);
+          $query->bindValue(':fechaDeNacimiento', $data['fechaNacimiento'], PDO::PARAM_STR);
+          $query->bindValue(':intereses', $data['intereses'], PDO::PARAM_STR);
+          $query->bindValue(':usuario_id', $id, PDO::PARAM_INT);
+          $query->execute();
+        }
+      }
     }
 
     //    Illuminate\Database\QueryException  : SQLSTATE[HY000] [1049] Unknown database 'basedelaravel' (SQL: select * from information_schema.tables where table_schema = basedelaravel and table_name = migrations)   ver esto si sirve de algo fue un error de laravel

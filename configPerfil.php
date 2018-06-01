@@ -1,8 +1,7 @@
 <?php
-
 require_once ('acceso.php');
 require_once ('validaciones.php');
-//require_once('soporte.php');
+
 if (!$auth->estaLogueado()) {
   header('location: inicio-sesion.php');
   exit;
@@ -21,6 +20,7 @@ if ($_POST){
   $intereses = trim ($_POST['intereses']);
   $errores= Validaciones::validarConfigPerfil($_POST);
   $dbMYSQL->saveProfile($usuario->getId(),  $errores , $_POST);
+  header('location:perfil.php');
 }
 ?>
 <!DOCTYPE html>
@@ -51,7 +51,6 @@ if ($_POST){
     padding: 10px;
   }
   .grid-container > div {
-    <!-- text-align: right; -->
     padding: 50px 0;
     font-size: 1.2em;
   }
@@ -99,9 +98,6 @@ if ($_POST){
       <div class='p-2 col-12 col-md-8 col-lg-8'>
         <form class="form-control m-2 p-5 margin-auto" method="post" >
 
-          <!-- <label class="input-group input-group-lg"><strong>Nombre y apellido</strong></label>
-          <input type="text" name="name" class="w-100 mb-3 mt-2 form-control"  value=""> -->
-
           <label class="input-group input-group-lg "><strong>Ciudad de nacimiento</strong></label>
           <input type="text" name="ciudadNacimiento" class="w-100 mb-3 mt-2 form-control"  value="<?=$ciudadNacimiento?>">
           <?php if (isset($errores['ciudadNacimiento'])): ?>
@@ -119,7 +115,7 @@ if ($_POST){
           <?php if (isset($errores['fechaNacimiento'])): ?>
             <span style="color: red;"><?=$errores['fechaNacimiento'];?></span>
           <?php endif; ?>
-<br>
+          <br>
           <span class="pseudo-label"><strong>Idiomas que hablo</strong></span>
           <div class="container-inline actions">
             <select name='language'>

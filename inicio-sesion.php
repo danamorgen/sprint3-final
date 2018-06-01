@@ -21,12 +21,11 @@ if ($auth->estaLogueado()) {
 			// $usuario = $dbJSON->existeMail($email);                  si guarda en JSON va esta linea
 				$usuario = $dbMYSQL->existeMail($email);
 			//$auth->loguear($usuario['id']);  	// Seteo la
-		$auth->loguear($usuario->getId());
 			if (isset($_POST["recordar"])) {
-	        setcookie('id', $usuario['id'], time() + 3600 * 24 * 30);
-	      }
-			header('location: perfil.php');
-			exit;
+			 setcookie('id', $usuario->getId(), time() + 3600 * 24 * 30);
+			}
+				$auth->loguear($usuario->getId());
+
 		}
 	}
  ?>
@@ -101,13 +100,14 @@ if ($auth->estaLogueado()) {
 
 
 
-          <div class="contenedor-registracion container-fluid imgFondo d-flex flex-column justify-content-center align-items-center w-100">
+          <div class="contenedor-registracion container-fluid imgFondo d-flex flex-column justify-content-center align-items-center w-100" style="margin-top:100px;">
               <div class="p-4">
 
                 <form class="form-control  p-5 margin-auto" method="post">
 									<?php
 									  	if (isset($_GET['primeraVez'])) {
 									  		echo "<h3>Gracias por registrarte</h3>";
+												$dbMYSQL->setMessage("Tu perfil se encuentra vacio, completalo desde el boton configuracion.");
 									  	}
 									?>
                   <h2 class="mb-3 text-center">Bienvenido</h2>

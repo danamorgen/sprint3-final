@@ -17,7 +17,7 @@ require_once('soporte.php');
    <style>
 
      section {
-         margin-top: 100px;
+         margin-top: 20px;
          padding:140px;
          background-image: url("imagenes/airport.jpg");
          background-position: center;

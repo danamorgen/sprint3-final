@@ -5,8 +5,6 @@ require_once('usuario.php');
 require_once('usuarios.php');
 require_once('validaciones.php');
 
-
-
 $data=$_POST;
 
 if ($auth->estaLogueado()) {
@@ -169,6 +167,7 @@ if ($_POST) {
                   <label for="">Subí tu foto de perfil </label><br>
                   <input type="file" name="imagen" value="">
                   <?php if (isset($errores['imagen'])): ?>
+                    <br>
               <span style="color: red;"><?=$errores['imagen'];?></span>
             <?php endif; ?>
 
